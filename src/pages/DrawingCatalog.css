@@ -1,0 +1,20 @@
+.box{
+   margin: 15px;
+   font-size: 20px;
+   padding-left: 40px;
+}
+.box a {
+   color: #32353b;
+   font-size: 20px;
+}
+.box ul {
+   line-height: 50px;
+}
+.box li {
+   list-style-type: none;
+}
+.material-icons{
+   margin-right: 15px;
+   font-size: 35px;
+   
+}

@@ -1,0 +1,63 @@
+.navlink a {
+   text-decoration: none;
+   color:#fedfaa 
+    /* Убираем подчёркивание */
+  }
+
+ 
+ 
+.navlink{
+   color: #fedfaa;
+   font-size: 25px;
+   text-align: center;
+   height: 50px;
+   line-height: 50px;
+   transition-duration: 0.1s;
+   transition-timing-function: linear;
+         
+}
+.navlink:hover{
+   background-color: #ffffff;
+   color: #2362e0;
+   display: block;
+   height: 50px;
+   width: 80%;
+   position: relative;
+   left: 30%;
+   border-top-left-radius: 25px;
+   border-bottom-left-radius: 25px;
+}
+
+.active {
+   background-color: #ffffff;
+   color: #2362e0;
+   display: block;
+   height: 50px;
+   width: 75%;
+   position: relative;
+   left: 30%;
+   border-top-left-radius: 25px;
+   border-bottom-left-radius: 25px;
+
+}
+.active {
+   color: #32353b;
+}
+.navigator::after{
+   content: "РСРК";
+   display: block;
+   background-color:#32353b;
+   position: relative;
+   font-size: 35px;
+   font-weight: bolder;
+   top: -300px;
+   color:#fedfaa ;
+   text-align: center;
+   padding-top: 15px;
+   height: 85px;
+   width: 101%;
+   border-top-left-radius: 35px;
+   border-top-right-radius: 35px;
+   
+   
+}
