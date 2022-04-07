@@ -1,7 +1,11 @@
 import React from 'react'
 import { useEffect,useState } from 'react'
+//=======import Style=======//
 import './DrawingCatalog.css'
+//=======import axios=======//
 import axios from 'axios'
+//=======import Componets=======//
+import ImalgeList from '../component/ImalgeList'
 
 
 export default function DrawingCatalog() {
@@ -41,9 +45,18 @@ export default function DrawingCatalog() {
       </div>
 
      {/* блок отрисовки */}
-     
-      
-     
+     {data.isCatalog ? <ImalgeList img={data.files}/> : 
+
+        <div>
+          {data.files.map(item=>{
+            return <li key={item.name}>
+                      <a href={data.path+`/`+item.name} onClick={clicHeandler}>
+                        {item.name}
+                      </a>
+                   </li>
+          })}       
+       </div>}
+          
      
     </div>
   )
