@@ -7,8 +7,13 @@ import axios from 'axios'
 //=======import Componets=======//
 import ImalgeList from '../component/ImalgeList'
 
+import TextField from '@mui/material/TextField'
+import FolderIcon from '@mui/icons-material/Folder';
+
 
 export default function DrawingCatalog() {
+
+  const [search,setSearch]=useState(``)
 
   const [data,setData]=useState({
     path:``,
@@ -22,6 +27,7 @@ export default function DrawingCatalog() {
   const clicHeandler = event =>{
 
     event.preventDefault();
+    setSearch(``)    
     let path = event.target.attributes.href.value;
     axios.get(`http://localhost:8000/?path=${path}`)
       .then((res)=>{    
@@ -33,29 +39,64 @@ export default function DrawingCatalog() {
       })
   
   }
-  
 
-  return (
-        // кнопка назад
+  const SearcOnFolder = event =>{
+    //надо сделать проверку на символ \
+    setSearch(event.target.value) 
+  }
+
+  const searchFilter=(arr=[],reg)=>{
+    return arr.filter(item=>{
+          if(reg==``){
+            return item
+          }
+          else{
+            let regEx = RegExp(reg)            
+            if(regEx.test(item.name)||regEx.test(item.name.toLowerCase())){
+              return item
+            }
+          }
+    })
+  }
+
+    return (
+        
     <div className='box'>
-      <div>{!parent? ``: <a href={parent} onClick={clicHeandler}> 
+      <div className='outlinenav'>
+        {/* строка поиска               */}
+             <TextField sx={{width:450}}
+              id="outlined-basic"
+               label="поиск по текущему каталогу"
+                variant="outlined" 
+                onChange={SearcOnFolder}
+              />
+          {/* кнопка назад */}
+             {!parent? ``: <a href={parent} onClick={clicHeandler}> 
                 <span className="material-icons">undo</span>
                 назад
              </a>}
       </div>
+      <hr />
+      
+      
 
      {/* блок отрисовки */}
-     {data.isCatalog ? <ImalgeList img={data.files}/> : 
+     {data.isCatalog ?
+           <ImalgeList img={searchFilter(data.files,search)}/>
+           
+           : 
 
-        <div>
-          {data.files.map(item=>{
-            return <li key={item.name}>
-                      <a href={data.path+`/`+item.name} onClick={clicHeandler}>
-                        {item.name}
-                      </a>
-                   </li>
-          })}       
-       </div>}
+          <div className={data.files.length>10 ? "moreTen" : ``}> 
+          
+              {searchFilter(data.files,search).map(item=>{             
+                return <li key={item.name}>
+                          <FolderIcon fontSize='large' className='icon' />
+                          <a href={data.path+`/`+item.name} onClick={clicHeandler}>
+                            {item.name}
+                          </a>
+                      </li>
+              })}       
+         </div>}
           
      
     </div>

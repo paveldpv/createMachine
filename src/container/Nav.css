@@ -44,7 +44,7 @@
    color: #32353b;
 }
 .navigator::after{
-   content: "РСРК";
+   content: "РСПК";
    display: block;
    background-color:#32353b;
    position: relative;
@@ -55,7 +55,7 @@
    text-align: center;
    padding-top: 15px;
    height: 85px;
-   width: 101%;
+   width: 100%;
    border-top-left-radius: 35px;
    border-top-right-radius: 35px;
    

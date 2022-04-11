@@ -1,10 +1,19 @@
 import React from 'react'
 import { useEffect,useState } from 'react'
+//=======import Style=======//
 import './DrawingCatalog.css'
+//=======import axios=======//
 import axios from 'axios'
+//=======import Componets=======//
+import ImalgeList from '../component/ImalgeList'
+
+import TextField from '@mui/material/TextField'
+import FolderIcon from '@mui/icons-material/Folder';
 
 
 export default function DrawingCatalog() {
+
+  const [search,setSearch]=useState(``)
 
   const [data,setData]=useState({
     path:``,
@@ -18,6 +27,7 @@ export default function DrawingCatalog() {
   const clicHeandler = event =>{
 
     event.preventDefault();
+    setSearch(``)    
     let path = event.target.attributes.href.value;
     axios.get(`http://localhost:8000/?path=${path}`)
       .then((res)=>{    
@@ -29,38 +39,73 @@ export default function DrawingCatalog() {
       })
   
   }
-  
+  const SearcOnFolder = event =>{
 
-  return (
-        // кнопка назад
+    setSearch(event.target.value)
+  }
+
+    return (
+        
     <div className='box'>
-      <div>{!parent? ``: <a href={parent} onClick={clicHeandler}> 
+      <div className='outlinenav'>
+        {/* строка поиска               */}
+             <TextField sx={{width:450}}
+              id="outlined-basic"
+               label="поиск по текущему каталогу"
+                variant="outlined" 
+                onChange={SearcOnFolder}
+              />
+          {/* кнопка назад */}
+             {!parent? ``: <a href={parent} onClick={clicHeandler}> 
                 <span className="material-icons">undo</span>
                 назад
              </a>}
       </div>
+      <hr />
+      
+      
 
      {/* блок отрисовки */}
-      <ul>
-      {data.files.map(item=>{
-        if(item.dir){
-          return <li className='folder' key={item.name}>
-             <span className="material-icons">folder</span>
-                    <a href={data.path+"/"+item.name} onClick={clicHeandler}>
-                      {item.name}
-                    </a>
-                  </li>                  
-        }
-        else{
-          return <li key={item.name}>
-                  <h4>{item.name}</h4>
-                  <hr />
-                  <img src={item.src} alt="" />
-                 </li>
-        }
-      })}
-      </ul>
-     
+     {data.isCatalog ?
+           <ImalgeList img={data.files.filter((val)=>{
+             if(search==``){
+               return val
+             }
+             else{
+               
+               let regEx=RegExp(search)
+               if(regEx.test(val.name)||regEx.test(val.name.toLowerCase())){
+                 return val
+               }
+             }
+           })}/>
+           
+           : 
+
+          <div className={data.files.length>10 ? "moreTen" : ``}> 
+          
+           {data.files.filter((val)=>{
+             if(search==``){
+               return val
+             }
+             else{
+               let regEx=RegExp(search)
+               if(regEx.test(val.name)||regEx.test(val.name.toLowerCase())){
+                 return val
+               }
+             }
+
+           }).map(item=>{
+             
+            return <li key={item.name}>
+                      <FolderIcon fontSize='large' className='icon' />
+                      <a href={data.path+`/`+item.name} onClick={clicHeandler}>
+                        {item.name}
+                      </a>
+                   </li>
+          })}       
+       </div>}
+          
      
     </div>
   )
